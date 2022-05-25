@@ -1,20 +1,12 @@
 
 #[derive(Copy, Clone)]
 pub struct Vector3 {
-    x: f32,
-    y: f32,
-    z: f32
+    pub x: f32,
+    pub y: f32,
+    pub z: f32
 }
 
 impl Vector3 {
-    fn new(x: f32, y: f32, z:f32) -> Vector3 {
-        Vector3 {
-            x: x, 
-            y: y, 
-            z: z
-        }
-    }
-
     /**
      * Returns the squared distance between this point and the right hand  side
      */
@@ -23,7 +15,7 @@ impl Vector3 {
         let new_y = self.y - _rhs.y;
         let new_z = self.z - _rhs.z;
 
-        return (new_x * new_x) + (new_y * new_y) + (new_z * new_z);
+        return ((new_x * new_x) + (new_y * new_y) + (new_z * new_z)).abs();
     }
 }
 
@@ -34,11 +26,11 @@ impl Vector3 {
  * matching right hand side variable is subtract by the matching left hand side variable
  */
 impl std::ops::Sub<Vector3> for Vector3 {
-    type Output = Vector3;
+    type Output = Self;
 
-    fn sub(self, _rhs: Vector3) -> Vector3 {
+    fn sub(self, _rhs: Self) -> Self {
 
-        Vector3 {
+        Self {
             x:self.x - _rhs.x,
             y:self.y - _rhs.y,
             z:self.z - _rhs.z
@@ -52,11 +44,11 @@ impl std::ops::Sub<Vector3> for Vector3 {
  * matching right hand side variable is multiplied by the matching left hand side variable
  */
 impl std::ops::Mul<Vector3> for Vector3 {
-    type Output = Vector3;
+    type Output = Self;
 
-    fn mul(self, _rhs: Vector3) -> Vector3 {
+    fn mul(self, _rhs: Self) -> Self {
 
-        Vector3 {
+        Self {
             x:self.x * _rhs.x,
             y:self.y * _rhs.y,
             z:self.z * _rhs.z
@@ -95,5 +87,19 @@ impl std::ops::Mul<f32> for Vector3 {
             y:self.y * _rhs,
             z:self.z * _rhs
         }
+    }
+}
+
+/**
+ * Overload for the add and assign operator where right hand side is Vector3
+ * Adds the matching right hand side variables to the left hand side variables
+ */
+impl std::ops::AddAssign<Vector3> for Vector3 {
+
+    fn add_assign(&mut self, _rhs: Self) {
+
+        self.x += _rhs.x;
+        self.y += _rhs.y;
+        self.z += _rhs.z;
     }
 }

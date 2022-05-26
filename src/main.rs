@@ -5,6 +5,8 @@ use n_body_simulation::n_body_simulator::*;
 use n_body_simulation::celestial_body:: *;
 use math::vector_3::Vector3;
 
+const FIXED_TIME_STEP: f32 = 0.02;
+
 fn main() {
     let sun = CelestialBody::new(
         0,
@@ -26,7 +28,9 @@ fn main() {
     celestial_bodies.push(sun);
     celestial_bodies.push(earth);
 
-    let mut simulator = NBodySimulator::new(celestial_bodies);
+    let mut simulator = NBodySimulator::new(FIXED_TIME_STEP, celestial_bodies);
     
-    simulator.start();
+    for _i in 1..125 {
+        simulator.run_simulation_step(1);
+    }
 }

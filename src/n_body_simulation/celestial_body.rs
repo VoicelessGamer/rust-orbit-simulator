@@ -9,7 +9,7 @@ pub struct CelestialBody {
     pub mass: f32,
     pub radius: f32,
     current_velocity: Vector3,
-    current_position: Vector3
+    pub current_position: Vector3
 }
 
 #[allow(dead_code)]
@@ -50,7 +50,7 @@ impl CelestialBody {
 
             // Update the current velocity based of the other body
             let sqr_dist: f32 = body.current_position.sqr_magnitude(self.current_position);
-            let dist: f32 = sqr_dist.sqrt();
+            let dist: f32 = sqr_dist.sqrt(); // Magnitude (distance between points)
             let force_dir: Vector3 = (body.current_position - self.current_position) / dist;
             let force: Vector3 = force_dir * GRAVITATIONAL_CONSTANT * body.mass / sqr_dist;
 

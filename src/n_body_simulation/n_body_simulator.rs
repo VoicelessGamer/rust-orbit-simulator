@@ -2,10 +2,9 @@
 
 use crate::n_body_simulation::celestial_body::*;
 
-const FIXED_TIME_STEP: f32 = 0.02;
-
 pub struct NBodySimulator{
-    celestial_bodies: Vec<CelestialBody>
+    time_step: f32,
+    pub celestial_bodies: Vec<CelestialBody>
 }
 
 #[allow(dead_code)]
@@ -13,16 +12,24 @@ impl NBodySimulator {
     /**
      * All args constructor
      */
-    pub fn new(celestial_bodies: Vec<CelestialBody>) -> NBodySimulator {
+    pub fn new(time_step: f32, celestial_bodies: Vec<CelestialBody>) -> NBodySimulator {
         NBodySimulator {
+            time_step,
             celestial_bodies
         }
     }
 
     /**
+     * Add the given celestial body to the stored vector
+     */
+    pub fn add_celestial_body(&mut self, celestial_body: CelestialBody) {
+        self.celestial_bodies.push(celestial_body);
+    }
+
+    /**
      * Function to update the velocity and positions of all celestial bodies
      */
-    fn process_physics(&mut self, delta: f32) {
+    fn process_physics_step(&mut self) {
         // Creating a mutable clone of the celestial_bodies vector
         // so that they can be passed as a parameter to the update_velocity function
         // within the mutable for loop iteration below 
@@ -32,7 +39,7 @@ impl NBodySimulator {
         for body in self.celestial_bodies.iter_mut() {
             // Temporarily excluding the first body, assuming it is the point of reference (i.e. the sun)
             if body.get_id() > 0 {
-                body.update_velocity(&mut all_bodies, delta);
+                body.update_velocity(&mut all_bodies, self.time_step);
             }
         }
 
@@ -40,19 +47,19 @@ impl NBodySimulator {
         for body in self.celestial_bodies.iter_mut() {
             // Temporarily excluding the first body, assuming it is the point of reference (i.e. the sun)
             if body.get_id() > 0 {
-                body.update_position(delta);
+                body.update_position(self.time_step);
             }
         }
     }
 
     /**
-     * Function to be called by the main entry point to start simulating the orbital physics
+     * Function to be called to simulate a given number of physics update calls
      */
-    pub fn start(&mut self) {
+    pub fn run_simulation_step(&mut self, steps: i32) {
 
-        // Currently only processing a limited number of physics updates for testing purposes
-        for _i in 1..125 {    
-            self.process_physics(FIXED_TIME_STEP);
+        // Processes the physics update a desired number of times
+        for _i in 0..steps {    
+            self.process_physics_step();
         }
     }
 }

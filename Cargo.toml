@@ -4,8 +4,8 @@ version = "0.0.1"
 authors = ["Adam Matthews <a.matthews42@outlook.com>"]
 edition = "2021"
 
-#[lib]
-#crate-type = ["cdylib"]
+[lib]
+crate-type = ["cdylib"]
 
 [dependencies]
 gdnative = "0.10"

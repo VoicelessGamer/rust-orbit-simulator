@@ -9,7 +9,7 @@ use crate::math::vector_3::Vector3 as Vec3;
 #[allow(dead_code)]
 pub struct NBodySystem {
     #[property(default = 0.02)]
-    fixed_time_step: f32,
+    fixed_time_step: f64,
 
     simulator: Option<NBodySimulator>
 }
@@ -41,7 +41,7 @@ impl NBodySystem {
      * Allows a godot script to add a new body to the simulator
      */
     #[export]
-    fn add_celestial_body(&mut self, _owner: &Node, id: i32, reference_point: bool, mass: f32, radius: f32, current_velocity: Vector3, current_position: Vector3) {
+    fn add_celestial_body(&mut self, _owner: &Node, id: i32, reference_point: bool, mass: f64, radius: f64, current_velocity: Vector3, current_position: Vector3) {
         let sim = self.simulator.as_mut().unwrap();
 
         sim.add_celestial_body(CelestialBody::new(
@@ -49,8 +49,8 @@ impl NBodySystem {
             reference_point,
             mass,
             radius,
-            Vec3 {x: current_velocity.x, y: current_velocity.y, z: current_velocity.z},
-            Vec3 {x: current_position.x, y: current_position.y, z: current_position.z}
+            Vec3 {x: current_velocity.x as f64, y: current_velocity.y as f64, z: current_velocity.z as f64},
+            Vec3 {x: current_position.x as f64, y: current_position.y as f64, z: current_position.z as f64}
         ));
 
         godot_print!("Celestial Body added! Total: {}", sim.celestial_bodies.len());
@@ -78,6 +78,6 @@ impl NBodySystem {
 
         let body = sim.celestial_bodies[index];
 
-        return Option::Some(Vector3 {x: body.current_position.x, y: body.current_position.y, z: body.current_position.z});
+        return Option::Some(Vector3 {x: body.current_position.x as f32, y: body.current_position.y as f32, z: body.current_position.z as f32});
     }
 }

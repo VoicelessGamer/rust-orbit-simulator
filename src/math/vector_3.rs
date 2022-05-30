@@ -1,16 +1,16 @@
 
 #[derive(Copy, Clone)]
 pub struct Vector3 {
-    pub x: f32,
-    pub y: f32,
-    pub z: f32
+    pub x: f64,
+    pub y: f64,
+    pub z: f64
 }
 
 impl Vector3 {
     /**
      * Returns the squared distance between this point and the right hand  side
      */
-    pub fn sqr_magnitude(&self, _rhs: Vector3) -> f32 {
+    pub fn sqr_magnitude(&self, _rhs: Vector3) -> f64 {
         let new_x = self.x - _rhs.x;
         let new_y = self.y - _rhs.y;
         let new_z = self.z - _rhs.z;
@@ -57,13 +57,13 @@ impl std::ops::Mul<Vector3> for Vector3 {
 }
 
 /**
- * Overload for the divide operator where right hand side is an f32
- * Returns a new Vector3 where each left hand side variable is divided by the f32
+ * Overload for the divide operator where right hand side is an f64
+ * Returns a new Vector3 where each left hand side variable is divided by the f64
  */
-impl std::ops::Div<f32> for Vector3 {
+impl std::ops::Div<f64> for Vector3 {
     type Output = Vector3;
 
-    fn div(self, _rhs: f32) -> Vector3 {
+    fn div(self, _rhs: f64) -> Vector3 {
 
         Vector3 {
             x:self.x / _rhs,
@@ -74,13 +74,13 @@ impl std::ops::Div<f32> for Vector3 {
 }
 
 /**
- * Overload for the multiply operator where right hand side is an f32
- * Returns a new Vector3 where each left hand side variable is multiplied by the f32
+ * Overload for the multiply operator where right hand side is an f64
+ * Returns a new Vector3 where each left hand side variable is multiplied by the f64
  */
-impl std::ops::Mul<f32> for Vector3 {
+impl std::ops::Mul<f64> for Vector3 {
     type Output = Vector3;
 
-    fn mul(self, _rhs: f32) -> Vector3 {
+    fn mul(self, _rhs: f64) -> Vector3 {
 
         Vector3 {
             x:self.x * _rhs,

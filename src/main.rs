@@ -5,7 +5,7 @@ use n_body_simulation::n_body_simulator::*;
 use n_body_simulation::celestial_body:: *;
 use math::vector_3::Vector3;
 
-const FIXED_TIME_STEP: f32 = 0.02;
+const FIXED_TIME_STEP: f64 = 0.02;
 
 fn main() {
     let sun = CelestialBody::new(

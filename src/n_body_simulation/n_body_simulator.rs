@@ -3,7 +3,7 @@
 use crate::n_body_simulation::celestial_body::*;
 
 pub struct NBodySimulator{
-    time_step: f32,
+    time_step: f64,
     pub celestial_bodies: Vec<CelestialBody>
 }
 
@@ -12,7 +12,7 @@ impl NBodySimulator {
     /**
      * All args constructor
      */
-    pub fn new(time_step: f32, celestial_bodies: Vec<CelestialBody>) -> NBodySimulator {
+    pub fn new(time_step: f64, celestial_bodies: Vec<CelestialBody>) -> NBodySimulator {
         NBodySimulator {
             time_step,
             celestial_bodies

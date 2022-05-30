@@ -1,15 +1,15 @@
 use crate::math::vector_3::*;
 
-//const GRAVITATIONAL_CONSTANT: f32 = 0.000_000_000_0674;
-const GRAVITATIONAL_CONSTANT: f32 = 0.000_000_000_000_674;
+//const GRAVITATIONAL_CONSTANT: f64 = 0.000_000_000_0674;
+const GRAVITATIONAL_CONSTANT: f64 = 0.000_000_000_000_674;
 
 #[allow(dead_code)] // Here until radius is used
 #[derive(Copy, Clone)]
 pub struct CelestialBody {
     id: i32,
     reference_point: bool,
-    mass: f32,
-    radius: f32,
+    mass: f64,
+    radius: f64,
     current_velocity: Vector3,
     pub current_position: Vector3
 }
@@ -19,7 +19,7 @@ impl CelestialBody {
     /**
      * All args constructor
      */ 
-    pub fn new(id: i32, reference_point: bool, mass: f32, radius: f32, current_velocity: Vector3, current_position: Vector3) -> CelestialBody {
+    pub fn new(id: i32, reference_point: bool, mass: f64, radius: f64, current_velocity: Vector3, current_position: Vector3) -> CelestialBody {
         CelestialBody {
             id: id,
             reference_point: reference_point,
@@ -40,7 +40,7 @@ impl CelestialBody {
     /**
      * Updates the velocity of this celestial body based on the values from all given other bodies 
      */
-    pub fn update_velocity(&mut self, other_bodies: &[CelestialBody], time_step: f32) {
+    pub fn update_velocity(&mut self, other_bodies: &[CelestialBody], time_step: f64) {
 
         // Iterates the other celestial bodies an updates the current velocity 
         // based on the gravitational pull from each
@@ -51,8 +51,8 @@ impl CelestialBody {
             }
 
             // Update the current velocity based of the other body
-            let sqr_dist: f32 = body.current_position.sqr_magnitude(self.current_position);
-            let dist: f32 = sqr_dist.sqrt(); // Magnitude (distance between points)
+            let sqr_dist: f64 = body.current_position.sqr_magnitude(self.current_position);
+            let dist: f64 = sqr_dist.sqrt(); // Magnitude (distance between points)
             let force_dir: Vector3 = (body.current_position - self.current_position) / dist;
             let force: Vector3 = force_dir * GRAVITATIONAL_CONSTANT * body.mass / sqr_dist;
 
@@ -63,7 +63,7 @@ impl CelestialBody {
     /**
      * Updates the position of this body based on the current velocity and the time since the last update
      */
-    pub fn update_position(&mut self, time_step: f32) {
+    pub fn update_position(&mut self, time_step: f64) {
         self.current_position += self.current_velocity * time_step;
 
         //println!("Body: {}, is in position: ({}, {}, {})", self.id, self.current_position.x, self.current_position.y, self.current_position.z);

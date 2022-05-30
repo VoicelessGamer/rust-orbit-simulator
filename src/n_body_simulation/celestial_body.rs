@@ -1,13 +1,15 @@
 use crate::math::vector_3::*;
 
-//const GRAVITATIONAL_CONSTANT: f32 = 0.0000000000674;
-const GRAVITATIONAL_CONSTANT: f32 = 0.674;
+//const GRAVITATIONAL_CONSTANT: f32 = 0.000_000_000_0674;
+const GRAVITATIONAL_CONSTANT: f32 = 0.000_000_000_000_674;
 
+#[allow(dead_code)] // Here until radius is used
 #[derive(Copy, Clone)]
 pub struct CelestialBody {
     id: i32,
-    pub mass: f32,
-    pub radius: f32,
+    reference_point: bool,
+    mass: f32,
+    radius: f32,
     current_velocity: Vector3,
     pub current_position: Vector3
 }
@@ -17,9 +19,10 @@ impl CelestialBody {
     /**
      * All args constructor
      */ 
-    pub fn new(id: i32, mass: f32, radius: f32, current_velocity: Vector3, current_position: Vector3) -> CelestialBody {
+    pub fn new(id: i32, reference_point: bool, mass: f32, radius: f32, current_velocity: Vector3, current_position: Vector3) -> CelestialBody {
         CelestialBody {
             id: id,
+            reference_point: reference_point,
             mass: mass, 
             radius: radius, 
             current_velocity: current_velocity,
@@ -28,10 +31,10 @@ impl CelestialBody {
     }
 
     /**
-     * Temporary function used by the simulator 
+     * Getter for the reference point variable
      */
-    pub fn get_id(&self) -> i32 {
-        return self.id;
+    pub fn is_reference_point(self) -> bool {
+        self.reference_point
     }
 
     /**
@@ -43,8 +46,7 @@ impl CelestialBody {
         // based on the gravitational pull from each
         for body in other_bodies {
             // Check the body is not equal to this body
-            // TODO: Need to improve this check
-            if body.id == self.id {
+            if body == self {
                 continue;
             }
 
@@ -65,6 +67,18 @@ impl CelestialBody {
         self.current_position += self.current_velocity * time_step;
 
         //println!("Body: {}, is in position: ({}, {}, {})", self.id, self.current_position.x, self.current_position.y, self.current_position.z);
-        println!("{},{}", self.current_position.x, self.current_position.z);
+        //println!("{},{}", self.current_position.x, self.current_position.z);
     }
 }
+
+/**
+ * Overload for equals comparison between Celestial Bodies
+ * This assumes all Celestial Bodies have a unique id
+ */
+impl std::cmp::PartialEq for CelestialBody {
+    fn eq(&self, other: &Self) -> bool {
+        self.id == other.id
+    }
+}
+
+impl Eq for CelestialBody {}

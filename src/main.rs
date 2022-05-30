@@ -10,6 +10,7 @@ const FIXED_TIME_STEP: f32 = 0.02;
 fn main() {
     let sun = CelestialBody::new(
         0,
+        true,
         100_000.0,
         6.5,
         Vector3 {x: 0.0, y: 0.0, z: 0.0},
@@ -18,6 +19,7 @@ fn main() {
 
     let earth = CelestialBody::new(
         1,
+        false,
         1.0,
         1.8,
         Vector3 {x: 0.0, y: 0.0, z: 72.4},

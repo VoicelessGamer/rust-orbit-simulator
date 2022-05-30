@@ -41,18 +41,19 @@ impl NBodySystem {
      * Allows a godot script to add a new body to the simulator
      */
     #[export]
-    fn add_celestial_body(&mut self, _owner: &Node, id: i32, mass: f32, radius: f32, current_velocity: Vector3, current_position: Vector3) {
+    fn add_celestial_body(&mut self, _owner: &Node, id: i32, reference_point: bool, mass: f32, radius: f32, current_velocity: Vector3, current_position: Vector3) {
         let sim = self.simulator.as_mut().unwrap();
 
         sim.add_celestial_body(CelestialBody::new(
             id,
+            reference_point,
             mass,
             radius,
             Vec3 {x: current_velocity.x, y: current_velocity.y, z: current_velocity.z},
             Vec3 {x: current_position.x, y: current_position.y, z: current_position.z}
         ));
 
-        godot_print!("Celestial Body added!");
+        godot_print!("Celestial Body added! Total: {}", sim.celestial_bodies.len());
     }
 
     /**
@@ -64,8 +65,8 @@ impl NBodySystem {
 
         sim.run_simulation_step(steps);
 
-        let earth: CelestialBody = sim.celestial_bodies[1];
-        godot_print!("earth: {},{},{}", earth.current_position.x, earth.current_position.y, earth.current_position.z);
+        //let earth: CelestialBody = sim.celestial_bodies[1];
+        //godot_print!("earth: {},{},{}", earth.current_position.x, earth.current_position.y, earth.current_position.z);
     }
 
     /**

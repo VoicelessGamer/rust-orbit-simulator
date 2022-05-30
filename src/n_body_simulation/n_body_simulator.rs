@@ -37,16 +37,16 @@ impl NBodySimulator {
 
         // Iterates the celestial bodies and updates their velocities based on the other bodies
         for body in self.celestial_bodies.iter_mut() {
-            // Temporarily excluding the first body, assuming it is the point of reference (i.e. the sun)
-            if body.get_id() > 0 {
+            // Excluding the reference point body (i.e. the sun)
+            if !body.is_reference_point() {
                 body.update_velocity(&mut all_bodies, self.time_step);
             }
         }
 
         // Iterates the celestial bodies and updates their positions based on the velocities calculated in previous loop
         for body in self.celestial_bodies.iter_mut() {
-            // Temporarily excluding the first body, assuming it is the point of reference (i.e. the sun)
-            if body.get_id() > 0 {
+            // Excluding the reference point body (i.e. the sun)
+            if !body.is_reference_point() {
                 body.update_position(self.time_step);
             }
         }
@@ -58,7 +58,7 @@ impl NBodySimulator {
     pub fn run_simulation_step(&mut self, steps: i32) {
 
         // Processes the physics update a desired number of times
-        for _i in 0..steps {    
+        for _ in 0..steps {    
             self.process_physics_step();
         }
     }

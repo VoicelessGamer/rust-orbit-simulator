@@ -1,7 +1,5 @@
 use crate::math::vector_3::*;
-
-//const GRAVITATIONAL_CONSTANT: f64 = 0.000_000_000_0674;
-const GRAVITATIONAL_CONSTANT: f64 = 0.000_000_000_000_674;
+use crate::n_body_simulation::body::*;
 
 #[allow(dead_code)] // Here until radius is used
 #[derive(Copy, Clone)]
@@ -36,34 +34,32 @@ impl CelestialBody {
     pub fn is_reference_point(self) -> bool {
         self.reference_point
     }
+}
 
-    /**
-     * Updates the velocity of this celestial body based on the values from all given other bodies 
-     */
-    pub fn update_velocity(&mut self, other_bodies: &[CelestialBody], time_step: f64) {
+/**
+ * Implementing the Body trait allows the simulator to take this object into account during the simulation functionality
+ */
+impl Body for CelestialBody {
+    fn mass(&self) -> &f64 {
+        &self.mass
+    }
 
-        // Iterates the other celestial bodies an updates the current velocity 
-        // based on the gravitational pull from each
-        for body in other_bodies {
-            // Check the body is not equal to this body
-            if body == self {
-                continue;
-            }
+    fn velocity(&self) -> &Vector3{
+        &self.current_velocity
+    }
 
-            // Update the current velocity based of the other body
-            let sqr_dist: f64 = body.current_position.sqr_magnitude(self.current_position);
-            let dist: f64 = sqr_dist.sqrt(); // Magnitude (distance between points)
-            let force_dir: Vector3 = (body.current_position - self.current_position) / dist;
-            let force: Vector3 = force_dir * GRAVITATIONAL_CONSTANT * body.mass / sqr_dist;
+    fn position(&self) -> &Vector3{
+        &self.current_position
+    }
 
-            self.current_velocity += force * time_step;
-        }
+    fn add_velocity(&mut self, force: Vector3) {
+        self.current_velocity += force;
     }
 
     /**
      * Updates the position of this body based on the current velocity and the time since the last update
      */
-    pub fn update_position(&mut self, time_step: f64) {
+    fn update_position(&mut self, time_step: f64) {
         self.current_position += self.current_velocity * time_step;
 
         //println!("Body: {}, is in position: ({}, {}, {})", self.id, self.current_position.x, self.current_position.y, self.current_position.z);

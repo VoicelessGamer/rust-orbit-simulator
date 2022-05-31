@@ -103,3 +103,22 @@ impl std::ops::AddAssign<Vector3> for Vector3 {
         self.z += _rhs.z;
     }
 }
+
+/**
+ * Overload for equals comparison between 2 Vector3's
+ * Each parameter must match
+ */
+impl std::cmp::PartialEq for Vector3 {
+    fn eq(&self, other: &Self) -> bool {
+        self.x == other.x && self.y == other.y && self.z == other.z
+    }
+}
+
+impl Eq for Vector3 {}
+
+impl std::fmt::Display for Vector3 {
+
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "({}, {}, {})", self.x, self.y, self.z)
+    }
+}

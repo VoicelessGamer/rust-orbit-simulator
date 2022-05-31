@@ -7,6 +7,9 @@ use math::vector_3::Vector3;
 
 const FIXED_TIME_STEP: f64 = 0.02;
 
+//const GRAVITATIONAL_CONSTANT: f64 = 0.000_000_000_0674;
+const GRAVITATIONAL_CONSTANT: f64 = 0.000_000_000_000_674;
+
 fn main() {
     let sun = CelestialBody::new(
         0,
@@ -30,7 +33,7 @@ fn main() {
     celestial_bodies.push(sun);
     celestial_bodies.push(earth);
 
-    let mut simulator = NBodySimulator::new(FIXED_TIME_STEP, celestial_bodies);
+    let mut simulator = NBodySimulator::new(GRAVITATIONAL_CONSTANT, FIXED_TIME_STEP, celestial_bodies);
     
     for _i in 1..125 {
         simulator.run_simulation_step(1);

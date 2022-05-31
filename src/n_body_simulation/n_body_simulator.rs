@@ -1,8 +1,8 @@
-//use std::time::{SystemTime, UNIX_EPOCH};
-
 use crate::n_body_simulation::celestial_body::*;
+use crate::n_body_simulation::body::*;
 
 pub struct NBodySimulator{
+    gravitational_constant: f64,
     time_step: f64,
     pub celestial_bodies: Vec<CelestialBody>
 }
@@ -12,8 +12,9 @@ impl NBodySimulator {
     /**
      * All args constructor
      */
-    pub fn new(time_step: f64, celestial_bodies: Vec<CelestialBody>) -> NBodySimulator {
+    pub fn new(gravitational_constant: f64, time_step: f64, celestial_bodies: Vec<CelestialBody>) -> NBodySimulator {
         NBodySimulator {
+            gravitational_constant,
             time_step,
             celestial_bodies
         }
@@ -39,7 +40,7 @@ impl NBodySimulator {
         for body in self.celestial_bodies.iter_mut() {
             // Excluding the reference point body (i.e. the sun)
             if !body.is_reference_point() {
-                body.update_velocity(&mut all_bodies, self.time_step);
+                body.update_velocity(&mut all_bodies, self.gravitational_constant, self.time_step);
             }
         }
 
@@ -60,6 +61,10 @@ impl NBodySimulator {
         // Processes the physics update a desired number of times
         for _ in 0..steps {    
             self.process_physics_step();
+
+            for body in self.celestial_bodies.iter_mut() {
+                println!("{}", body.position());
+            }
         }
     }
 }

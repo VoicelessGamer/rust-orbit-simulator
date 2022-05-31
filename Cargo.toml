@@ -1,5 +1,5 @@
 [package]
-name = "rust-rocket-lib"
+name = "rust-orbit-simulator"
 version = "0.0.1"
 authors = ["Adam Matthews <a.matthews42@outlook.com>"]
 edition = "2021"

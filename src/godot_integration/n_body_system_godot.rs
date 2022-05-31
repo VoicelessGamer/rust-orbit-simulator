@@ -4,6 +4,8 @@ use crate::n_body_simulation::n_body_simulator::*;
 use crate::n_body_simulation::celestial_body::*;
 use crate::math::vector_3::Vector3 as Vec3;
 
+const GRAVITATIONAL_CONSTANT: f64 = 0.000_000_000_000_674;
+
 #[derive(NativeClass)]
 #[inherit(Node)]
 #[allow(dead_code)]
@@ -32,7 +34,7 @@ impl NBodySystem {
     #[export]
     fn _ready(&mut self, _owner: &Node) {
 
-        self.simulator = Some(NBodySimulator::new(self.fixed_time_step, Vec::new()));
+        self.simulator = Some(NBodySimulator::new(GRAVITATIONAL_CONSTANT, self.fixed_time_step, Vec::new()));
 
         godot_print!("N Body System ready finally!");
     }
@@ -64,9 +66,6 @@ impl NBodySystem {
         let sim = self.simulator.as_mut().unwrap();
 
         sim.run_simulation_step(steps);
-
-        //let earth: CelestialBody = sim.celestial_bodies[1];
-        //godot_print!("earth: {},{},{}", earth.current_position.x, earth.current_position.y, earth.current_position.z);
     }
 
     /**
